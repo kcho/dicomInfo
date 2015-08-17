@@ -68,6 +68,9 @@ def main(args):
             print 'TR : ', firstDicomFile.RepetitionTime
             print 'TE : ', firstDicomFile.EchoTime
             print 'Slice thickness : ', firstDicomFile.SliceThickness
+        if args.hye:
+            print 'age : ', firstDicomFile.PatientAge
+            print 'sex : ', firstDicomFile.PatientSex
             #print type(firstDicomFile)
 
     #parser.add_argument('-t','--tak',action='store_true',help="Print tak's information")
@@ -110,6 +113,7 @@ if __name__=='__main__':
     parser.add_argument('-d','--date',action='store_true',help='Get scan date')
     parser.add_argument('-a','--all',action='store_true',help='Print all information')
     parser.add_argument('-t','--tak',action='store_true',help="Print tak's information")
+    parser.add_argument('-y','--hye',action='store_true',help="Print hye's information")
     args = parser.parse_args()
 
     main(args)
