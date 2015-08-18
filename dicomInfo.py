@@ -1,4 +1,5 @@
 #!/ccnc_bin/venv/bin/python2.7
+__authors__=['Kevin','Takwan','BeumJun']
 
 import textwrap
 import dicom
@@ -46,8 +47,19 @@ def getDicomInfo(directory):
     return firstDicomFile
 
 
+def getDicomInfo2(dicomFile):
+    try:
+        firstDicomFile = dicom.read_file(dicomFile)
+    except:
+        firstDicomFile = dicom.read_file(dicomFile,force=True)
+
+    return firstDicomFile
+
 def main(args):
-    firstDicomFile = getDicomInfo(args.directory)
+    try:
+        firstDicomFile = getDicomInfo(args.directory)
+    except:
+        firstDicomFile = getDicomInfo2(args.dicom)
    
    # if response == 'AccessionNumber':
    #     print firstDicomFile.AccessionNumber
@@ -287,6 +299,7 @@ if __name__=='__main__':
 
             #epilog="By Kevin, 26th May 2014")
 parser.add_argument("-dir","--directory",help="Data directory location, default = pwd",default=os.getcwd())
+parser.add_argument("-dicom","--dicom",help="Dicom location")
 parser.add_argument("-AccessionNumber","--AccessionNumber",action="store_true",help="Get AccessionNumber")
 parser.add_argument("-AcquisitionDate","--AcquisitionDate",action="store_true",help="Get AcquisitionDate")
 parser.add_argument("-AcquisitionMatrix","--AcquisitionMatrix",action="store_true",help="Get AcquisitionMatrix")
@@ -399,113 +412,3 @@ args = parser.parse_args()
 main(args)                                                                                                                                                                 
                                                                                                                                                                            
  #'AccessionNumber', 'AcquisitionDate', 'A    cquisitionMatrix', 'AcquisitionNumber', 'AcquisitionTime', 'AngioFlag', 'BitsAllocated', 'BitsStored', 'Columns', 'Con    tentDate', 'ContentTime', 'DeviceSerialNumber', 'EchoNumbers', 'EchoTime', 'EchoTrainLength', 'FlipAngle', 'FrameOfReferenceUID', 'HighBit', 'ImageOrientationPatient', 'ImagePositionPatient', 'ImageType', 'ImagedNucleus', 'ImagingFrequency', 'InPlanePhaseEncodingDirection', 'InstanceCreationDate', 'InstanceCreationTime', 'InstanceNumber', 'InstitutionAddress', 'InstitutionName', 'InstitutionalDepartmentName', 'LargestImagePixelValue', 'MRAcquisitionType', 'MagneticFieldStrength', 'Manufacturer', 'ManufacturerModelName', 'Modality', 'NumberOfAverages', 'NumberOfPhaseEncodingSteps', 'OperatorsName', 'PatientAge', 'PatientBirthDate', 'PatientID', 'PatientName', 'PatientPosition', 'PatientSex', 'PatientWeight', 'PercentPhaseFieldOfView', 'PercentSampling', 'PerformedProcedureStepDescription', 'PerformedProcedureStepID', 'PerformedProcedureStepStartDate', 'PerformedProcedureStepStartTime', 'PerformingPhysicianName', 'PhotometricInterpretation', 'PhysiciansOfRecord', 'PixelBandwidth', 'PixelData', 'PixelRepresentation', 'PixelSpacing', 'PositionReferenceIndicator', 'ProtocolName', 'RefdImageSequence', 'ReferencedImageSequence', 'ReferringPhysicianName', 'RepetitionTime', 'RequestAttributesSequence', 'RequestedProcedureDescription', 'RequestingPhysician', 'Rows', 'SAR', 'SOPClassUID', 'SOPInstanceUID', 'SamplesPerPixel', 'ScanOptions', 'ScanningSequence', 'SequenceName', 'SequenceVariant', 'SeriesDate', 'SeriesDescription', 'SeriesInstanceUID', 'SeriesNumber', 'SeriesTime', 'SliceLocation', 'SliceThickness', 'SmallestImagePixelValue', 'SoftwareVersions', 'SpacingBetweenSlices', 'StationName', 'StudyDate', 'StudyDescription', 'StudyID', 'StudyInstanceUID', 'StudyTime', 'TransmitCoilName', 'VariableFlipAngleFlag', 'WindowCenter', 'WindowCenterWidthExplanation', 'WindowWidth', '__cmp__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__init__', '__iter__', '__le__', '__len__', '__lt__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_character_set', '_get_pixel_array', '_pixel_data_numpy', '_pretty_str', 'add', 'add_new', 'clear', 'copy', 'dBdt', 'data_element', 'decode', 'dir', 'formatted_lines', 'fromkeys', 'get', 'group_dataset', 'has_key', 'items', 'iterall', 'iteritems', 'iterkeys', 'itervalues', 'keys', 'pixel_array', 'pop', 'popitem', 'remove_private_tags', 'save_as', 'setdefault', 'top', 'trait_names', 'update', 'values', 'viewitems', 'viewkeys', 'viewvalues', 'walk'
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
-                                                                                                                                                                           
