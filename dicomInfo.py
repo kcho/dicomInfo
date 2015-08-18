@@ -23,44 +23,56 @@ def getDicomInfo(directory):
     firstDicomFile=''
 
     for root, dirs, files in os.walk(directory):
+        try: 
+            dicomFiles = [x for x in files if re.search('.*ima|.*dcm|\d{8}',x)]
+            firstDicomFile = dicomFiles[0]
 
-        #Looping through the bunch of files
-        for singleFile in files:
+            try:
+                firstDicomInfo = dicom.read_file(os.path.join(root,firstDicomFile))
+            except:
+                firstDicomInfo = dicom.read_file(os.path.join(root,firstDicomFile), force=True)
 
-            #if there is dicom files
-            if re.search('.*ima|.*dcm|\d{8}',singleFile,flags=re.IGNORECASE):
-                try:
-                    firstDicomFile = dicom.read_file(os.path.join(root,singleFile))
-                except:
-                    firstDicomFile = dicom.read_file(os.path.join(root,singleFile),force=True)
+            return firstDicomInfo
+        except:
+            pass
 
-                #make a switch to turn off the later loops
-                switch='break'
+        ##Looping through the bunch of files
+        #for singleFile in files:
 
-                #turn the file loop off
-                break
-            else:
-                switch='non-break'
+            ##if there is dicom files
+            #if re.search('.*ima|.*dcm|\d{8}',singleFile,flags=re.IGNORECASE):
+                #try:
+                    #firstDicomFile = dicom.read_file(os.path.join(root,singleFile))
+                #except:
+                    #firstDicomFile = dicom.read_file(os.path.join(root,singleFile),force=True)
 
-        #if switch is on, turn the dir loop off
-        if switch=='break':
-            break
-    return firstDicomFile
+                ##make a switch to turn off the later loops
+                #switch='break'
+
+                ##turn the file loop off
+                #break
+            #else:
+                #switch='non-break'
+
+        ##if switch is on, turn the dir loop off
+        #if switch=='break':
+            #break
 
 
 def getDicomInfo2(dicomFile):
     try:
-        firstDicomFile = dicom.read_file(dicomFile)
+        firstDicomInfo = dicom.read_file(dicomFile)
     except:
-        firstDicomFile = dicom.read_file(dicomFile,force=True)
-
-    return firstDicomFile
+        firstDicomInfo = dicom.read_file(dicomFile,force=True)
+    return firstDicomInfo
 
 def main(args):
-    try:
+    if args.dicom == None:
         firstDicomFile = getDicomInfo(args.directory)
-    except:
+    else:
         firstDicomFile = getDicomInfo2(args.dicom)
+
+    print firstDicomFile
    
    # if response == 'AccessionNumber':
    #     print firstDicomFile.AccessionNumber
@@ -70,215 +82,215 @@ def main(args):
    #     print firstDicomFile.PatientName
 
 
-    if args.AccessionNumber:
-        print firstDicomFile.AccessionNumber
-    if args.PatientName:
-        print 'Patient Name:',firstDicomFile.PatientName
-    if args.AcquisitionDate:
-        print 'Acquisition Date:',firstDicomFile.AcquisitionDate
-    if args.AcquisitionMatrix:
-        print 'Acquisition Matrix:',firstDicomFile.AcquisitionMatrix
-    if args.AcquisitionNumber:
-        print 'Acquisition Number:',firstDicomFile.AcquisitionNumber
-    if args.AcquisitionTime:
-        print 'Acquisition Time:',firstDicomFile.AquisitionTime
-    if args.AngioFlag:
-        print 'Angio Flag:',firstDicomFile.AngioFlag
-    if args.BitsAllocated:
-        print 'Bits Allocated:',firstDicomFile.BitsAllocated
-    if args.BitsStored:
-        print 'Bits Stored:',firstDicomFile.BitsStored
-    if args.Columns:
-        print 'Columns:',firstDicomFile.Columns
-    if args.ContentDate:
-        print 'Content Date:',firstDicomFile.ContentDate
-    if args.ContentTime:
-        print 'Content Time:',firstDicomFile.ContentTime
-    if args.DeviceSerialNumber:
-        print 'Device Serial Number:',firstDicomFile.DeviceSerialNumber
-    if args.EchoNumbers:
-        print 'Echo Numbers:',firstDicomFile.EchoNumbers
-    if args.EchoTime:
-        print 'Echo Time:',firstDicomFile.EchoTime
-    if args.EchoTrainLength:
-        print 'Echo Train Length:',firstDicomFile.EchoTrainLength
-    if args.FlipAngle:
-        print 'Flip Angle:',firstDicomFile.FlipAngle
-    if args.FrameOfReferenceUID:
-        print 'Frame of Reference UID:',firstDicomFile.FrameOfReferenceUID
-    if args.HighBit:
-        print 'High Bit:',firstDicomFile.HighBit
-    if args.ImageOrientationPatient:
-        print 'Image Oreigntation Patient:',firstDicomFile.ImageOrientationPatient
-    if args.ImagePositionPatient:
-        print 'Image Position Patient:',firstDicomFile.ImagePositionPatient
-    if args.ImageType:
-        print 'Image Type:',firstDicomFile.ImageType
-    if args.ImagedNucleus:
-        print 'Imaged Nucleus:',firstDicomFile.ImagedNucleus
-    if args.ImagingFrequency:
-        print 'Imaging Frequency:',firstDicomFile.ImagingFrequency
-    if args.InPlanePhaseEncodingDirection:
-        print 'In Plane Phase Encoding Direction:',firstDicomFile.InPlanePhaseEncodingDirection
-    if args.InstanceCreationDate:
-        print 'Instance Creation Date:',firstDicomFile.InstanceCreationDate
-    if args.InstanceNumber:
-        print 'Instance Number:',firstDicomFile.InstanceNumber
-    if args.InstitutionAddress:
-        print 'Institution Address:',firstDicomFile.InstitutionAddress
-    if args.InstitutionName:
-        print 'Institution Name:',firstDicomFile.InstitutionName
-    if args.InstitutionalDepartmentName:
-        print 'Institutional Department Name:',firstDicomFile.InstitutionalDepartmentName
-    if args.LargestImagePixelValue:
-        print 'Largest Image Pixel Value:',firstDicomFile.LargestImagePixelValue
-    if args.MRAcquisitionType:
-        print 'MR Acquisition Type:',firstDicomFile.MRAcquisitionType
-    if args.MagneticFieldStrength: 
-        print 'Magnetic Field Strength:',firstDicomFile.MagneticFieldStrength
-    if args.Manufacturer:
-        print 'Manufacturer:',firstDicomFile.Manufacturer
-    if args.ManufacturerModelName:
-        print 'Manufacturer Model Name:',firstDicomFile.ManufacturerModelName
-    if args.Modality:
-        print 'Modality:',firstDicomFile.Modality
-    if args.NumberOfAverages:
-        print 'Number of Averages:',firstDicomFile.NumberOfAverages
-    if args.NumberOfPhaseEncodingSteps:
-        print 'Number of Phase Encoding Steps:',firstDicomFile.NumberOfPhaseEncodingSteps
-    if args.OperatorsName:
-        print 'Operators Name:',firstDicomFile.OperatorsName
-    if args.PatientAge:
-        print 'Patient Age:',firstDicomFile.PatientAge
-    if args.PatientBirthDate:
-        print 'Patient Birth Date:',firstDicomFile.PatientBirthDate
-    if args.PatientID:
-        print 'Patient ID:',firstDicomFile.PatientID
-    if args.PatientPosition:
-        print 'Patient Position:',firstDicomFile.PatientPosition
-    if args.PatientSex:
-        print 'Patient Sex:',firstDicomFile.PatientSex
-    if args.PatientWeight:
-        print 'Patient Weight:',firstDicomFile.PatientWeight
-    if args.PercentPhaseFieldOfView:
-        print 'Percent Phase Field Of View:',firstDicomFile.PercentPhaseFieldOfView
-    if args.PercentSampling:
-        print 'Percent Sampling:',firstDicomFile.PercentSampling
-    if args.PerformedProcedureStepDescription:
-        print 'Performed Procedure Step Description:',firstDicomFile.PerformedProcedureStepDescription
-    if args.PerformedProcedureStepID:
-        print 'Performed Procedure Step ID:',firstDicomFile.PerformedProcedureStepID
-    if args.PerformedProcedureStepStartDate:
-        print 'Performed Procedure Step Start Date:',firstDicomFile.PerformedProcedureStepStartDate
-    if args.PerformedProcedureStepStartTime:
-        print 'Performed Procedure Step Start Time:',firstDicomFile.PerformedProcedureStepStartTime
-    if args.PerformingPhysicianName:
-        print 'Performing Physician Name:',firstDicomFile.PerformingPhysicianName
-    if args.PhotometricInterpretation:
-        print 'Photometric Interpretation:',firstDicomFile.PhotometricInterpretation
-    if args.PhysiciansOfRecord:
-        print 'Physicians Of Record:',firstDicomFile.PhysiciansOfRecord
-    if args.PixelBandwidth:
-        print 'Pixel Bandwidth:',firstDicomFile.PixelBandwidth
-    if args.PixelData:
-        print 'Pixel Data:',firstDicomFile.PixelData
-    if args.PixelRepresentation:
-        print 'Pixel Representation:',firstDicomFile.PixelRepresentation
-    if args.PixelSpacing:
-        print 'Pixel Spacing:',firstDicomFile.PixelSpacing
-    if args.PositionReferenceIndicator:
-        print 'Position Reference Indicator:',firstDicomFile.PositionReferenceIndicator
-    if args.ProtocolName:
-        print 'Protocol Name:',firstDicomFile.ProtocolName
-    if args.RefdImageSequence:
-        print 'Refd Image Sequence:',firstDicomFile.RefdImageSequence
-    if args.ReferencedImageSequence:
-        print 'Referenced Image Sequence:',firstDicomFile.ReferencedImageSequence
-    if args.ReferringPhysicianName:
-        print 'Referring Physician Name:',firstDicomFile.ReferringPhysicianName
-    if args.RepetitionTime:
-        print 'Repetition Time:',firstDicomFile.RepetitionTime
-    if args.RequestAttributesSequence:
-        print 'Request Attributes Sequence:',firstDicomFile.RequestsAttributeSequence
-    if args.RequestedProcedureDescription:
-        print 'Requested Procedure Description:',firstDicomFile.RequestedProcedureDescription
-    if args.RequestingPhysician:
-        print 'Requesting Physician:',firstDicomFile.RequestingPhysician
-    if args.Rows:
-        print 'Rows:',firstDicomFile.Rows
-    if args.SAR:
-        print 'SAR:',firstDicomFile.SAR
-    if args.SOPClassUID:
-        print 'SOP Class UID:',firstDicomFile.SOPClassUID
-    if args.SOPInstanceUID:
-        print 'SOP Instance UID:',firstDicomFile.SOPInstanceUID
-    if args.SamplesPerPixel:
-        print 'Samples Per Pixel:',firstDicomFile.SamplesPerPixel
-    if args.ScanOptions:
-        print 'Scan Options:',firstDicomFile.ScanOptions
-    if args.ScanningSequence:
-        print 'Scanning Sequence:',firstDicomFile.ScanningSequence
-    if args.SequenceName:
-        print 'Sequence Name:',firstDicomFile.SequenceName
-    if args.SequenceVariant:
-        print 'Sequence Variant:',firstDicomFile.SequenceVariant
-    if args.SeriesDate:
-        print 'Series Date:',firstDicomFile.SeriesDate
-    if args.SeriesDescription:
-        print 'Series Description:',firstDicomFile.SeriesDescription
-    if args.SeriesInstanceUID:
-        print 'Series Instance UID:',firstDicomFile.SeriesInstanceUID
-    if args.SeriesNumber:
-        print 'Series Number:',firstDicomFile.SeriesNumber
-    if args.SeriesTime:
-        print 'Series Time:',firstDicomFile.SeriesTime
-    if args.SliceLocation:
-        print 'Slice Location:',firstDicomFile.SliceLocation
-    if args.SliceThickness:
-        print 'Slice Thickness:',firstDicomFile.SliceThickness
-    if args.SmallestImagePixelValue:
-        print 'Smallest Image Pixel Value:',firstDicomFile.SmallestImagePixelValue
-    if args.SoftwareVersions:
-        print 'Software Versions:',firstDicomFile.SoftwareVersions
-    if args.SpacingBetweenSlices:
-        print 'Spacing Between Slices:',firstDicomFile.SpacingBetweenSlices
-    if args.StationName:
-        print 'Station Name:',firstDicomFile.StationName
-    if args.StudyDate:
-        print 'Study Date:',firstDicomFile.StudyDate
-    if args.StudyDescription:
-        print 'Study Description:',firstDicomFile.StudyDescription
-    if args.StudyID:
-        print 'Study ID:',firstDicomFile.StudyID
-    if args.StudyInstanceUID:
-        print 'Study Instance UID:',firstDicomFile.StudyInstanceUID
-    if args.StudyTime:
-        print 'Study Time:',firstDicomFile.StudparseryTime
-    if args.TransmitCoilName:
-        print 'Transmit Coil Name:',firstDicomFile.TransmitCoilName
-    if args.VariableFlipAngleFlag:
-        print 'Variable Flip Angle Flag:',firstDicomFile.VariableFlipAngleFlag
-    if args.WindowCenter:
-        print 'Window Center:',firstDicomFile.WindowCenter
-    if args.WindowCenterWidthExplanation:
-        print 'Window Center Width Explanation:',firstDicomFile.WindowCenterWidthExplanation
+    #if args.accessionnumber:
+        #print firstdicomfile.accessionnumber
+    #if args.patientname:
+        #print 'patient name:',firstdicomfile.patientname
+    #if args.acquisitiondate:
+        #print 'acquisition date:',firstdicomfile.acquisitiondate
+    #if args.acquisitionmatrix:
+        #print 'acquisition matrix:',firstdicomfile.acquisitionmatrix
+    #if args.acquisitionnumber:
+        #print 'acquisition number:',firstdicomfile.acquisitionnumber
+    #if args.acquisitiontime:
+        #print 'acquisition time:',firstdicomfile.aquisitiontime
+    #if args.angioflag:
+        #print 'angio flag:',firstdicomfile.angioflag
+    #if args.bitsallocated:
+        #print 'bits allocated:',firstdicomfile.bitsallocated
+    #if args.bitsstored:
+        #print 'bits stored:',firstdicomfile.bitsstored
+    #if args.columns:
+        #print 'columns:',firstdicomfile.columns
+    #if args.contentdate:
+        #print 'content date:',firstdicomfile.contentdate
+    #if args.contenttime:
+        #print 'content time:',firstdicomfile.contenttime
+    #if args.deviceserialnumber:
+        #print 'device serial number:',firstdicomfile.deviceserialnumber
+    #if args.echonumbers:
+        #print 'echo numbers:',firstdicomfile.echonumbers
+    #if args.echotime:
+        #print 'echo time:',firstdicomfile.echotime
+    #if args.echotrainlength:
+        #print 'echo train length:',firstdicomfile.echotrainlength
+    #if args.flipangle:
+        #print 'flip angle:',firstdicomfile.flipangle
+    #if args.frameofreferenceuid:
+        #print 'frame of reference uid:',firstdicomfile.frameofreferenceuid
+    #if args.highbit:
+        #print 'high bit:',firstdicomfile.highbit
+    #if args.imageorientationpatient:
+        #print 'image oreigntation patient:',firstdicomfile.imageorientationpatient
+    #if args.imagepositionpatient:
+        #print 'image position patient:',firstdicomfile.imagepositionpatient
+    #if args.imagetype:
+        #print 'image type:',firstdicomfile.imagetype
+    #if args.imagednucleus:
+        #print 'imaged nucleus:',firstdicomfile.imagednucleus
+    #if args.imagingfrequency:
+        #print 'imaging frequency:',firstdicomfile.imagingfrequency
+    #if args.inplanephaseencodingdirection:
+        #print 'in plane phase encoding direction:',firstdicomfile.inplanephaseencodingdirection
+    #if args.instancecreationdate:
+        #print 'instance creation date:',firstdicomfile.instancecreationdate
+    #if args.instancenumber:
+        #print 'instance number:',firstdicomfile.instancenumber
+    #if args.institutionaddress:
+        #print 'institution address:',firstdicomfile.institutionaddress
+    #if args.institutionname:
+        #print 'institution name:',firstdicomfile.institutionname
+    #if args.institutionaldepartmentname:
+        #print 'institutional department name:',firstdicomfile.institutionaldepartmentname
+    #if args.largestimagepixelvalue:
+        #print 'largest image pixel value:',firstdicomfile.largestimagepixelvalue
+    #if args.mracquisitiontype:
+        #print 'mr acquisition type:',firstdicomfile.mracquisitiontype
+    #if args.magneticfieldstrength: 
+        #print 'magnetic field strength:',firstdicomfile.magneticfieldstrength
+    #if args.manufacturer:
+        #print 'manufacturer:',firstdicomfile.manufacturer
+    #if args.manufacturermodelname:
+        #print 'manufacturer model name:',firstdicomfile.manufacturermodelname
+    #if args.modality:
+        #print 'modality:',firstdicomfile.modality
+    #if args.numberofaverages:
+        #print 'number of averages:',firstdicomfile.numberofaverages
+    #if args.numberofphaseencodingsteps:
+        #print 'number of phase encoding steps:',firstdicomfile.numberofphaseencodingsteps
+    #if args.operatorsname:
+        #print 'operators name:',firstdicomfile.operatorsname
+    #if args.patientage:
+        #print 'patient age:',firstdicomfile.patientage
+    #if args.patientbirthdate:
+        #print 'patient birth date:',firstdicomfile.patientbirthdate
+    #if args.patientid:
+        #print 'patient id:',firstdicomfile.patientid
+    #if args.patientposition:
+        #print 'patient position:',firstdicomfile.patientposition
+    #if args.patientsex:
+        #print 'patient sex:',firstdicomfile.patientsex
+    #if args.patientweight:
+        #print 'patient weight:',firstdicomfile.patientweight
+    #if args.percentphasefieldofview:
+        #print 'percent phase field of view:',firstdicomfile.percentphasefieldofview
+    #if args.percentsampling:
+        #print 'percent sampling:',firstdicomfile.percentsampling
+    #if args.performedprocedurestepdescription:
+        #print 'performed procedure step description:',firstdicomfile.performedprocedurestepdescription
+    #if args.performedprocedurestepid:
+        #print 'performed procedure step id:',firstdicomfile.performedprocedurestepid
+    #if args.performedprocedurestepstartdate:
+        #print 'performed procedure step start date:',firstdicomfile.performedprocedurestepstartdate
+    #if args.performedprocedurestepstarttime:
+        #print 'performed procedure step start time:',firstdicomfile.performedprocedurestepstarttime
+    #if args.performingphysicianname:
+        #print 'performing physician name:',firstdicomfile.performingphysicianname
+    #if args.photometricinterpretation:
+        #print 'photometric interpretation:',firstdicomfile.photometricinterpretation
+    #if args.physiciansofrecord:
+        #print 'physicians of record:',firstdicomfile.physiciansofrecord
+    #if args.pixelbandwidth:
+        #print 'pixel bandwidth:',firstdicomfile.pixelbandwidth
+    #if args.pixeldata:
+        #print 'pixel data:',firstdicomfile.pixeldata
+    #if args.pixelrepresentation:
+        #print 'pixel representation:',firstdicomfile.pixelrepresentation
+    #if args.pixelspacing:
+        #print 'pixel spacing:',firstdicomfile.pixelspacing
+    #if args.positionreferenceindicator:
+        #print 'position reference indicator:',firstdicomfile.positionreferenceindicator
+    #if args.protocolname:
+        #print 'protocol name:',firstdicomfile.protocolname
+    #if args.refdimagesequence:
+        #print 'refd image sequence:',firstdicomfile.refdimagesequence
+    #if args.referencedimagesequence:
+        #print 'referenced image sequence:',firstdicomfile.referencedimagesequence
+    #if args.referringphysicianname:
+        #print 'referring physician name:',firstdicomfile.referringphysicianname
+    #if args.repetitiontime:
+        #print 'repetition time:',firstdicomfile.repetitiontime
+    #if args.requestattributessequence:
+        #print 'request attributes sequence:',firstdicomfile.requestsattributesequence
+    #if args.requestedproceduredescription:
+        #print 'requested procedure description:',firstdicomfile.requestedproceduredescription
+    #if args.requestingphysician:
+        #print 'requesting physician:',firstdicomfile.requestingphysician
+    #if args.rows:
+        #print 'rows:',firstdicomfile.rows
+    #if args.sar:
+        #print 'sar:',firstdicomfile.sar
+    #if args.sopclassuid:
+        #print 'sop class uid:',firstdicomfile.sopclassuid
+    #if args.sopinstanceuid:
+        #print 'sop instance uid:',firstdicomfile.sopinstanceuid
+    #if args.samplesperpixel:
+        #print 'samples per pixel:',firstdicomfile.samplesperpixel
+    #if args.scanoptions:
+        #print 'scan options:',firstdicomfile.scanoptions
+    #if args.scanningsequence:
+        #print 'scanning sequence:',firstdicomfile.scanningsequence
+    #if args.sequencename:
+        #print 'sequence name:',firstdicomfile.sequencename
+    #if args.sequencevariant:
+        #print 'sequence variant:',firstdicomfile.sequencevariant
+    #if args.seriesdate:
+        #print 'series date:',firstdicomfile.seriesdate
+    #if args.seriesdescription:
+        #print 'series description:',firstdicomfile.seriesdescription
+    #if args.seriesinstanceuid:
+        #print 'series instance uid:',firstdicomfile.seriesinstanceuid
+    #if args.seriesnumber:
+        #print 'series number:',firstdicomfile.seriesnumber
+    #if args.seriestime:
+        #print 'series time:',firstdicomfile.seriestime
+    #if args.slicelocation:
+        #print 'slice location:',firstdicomfile.slicelocation
+    #if args.slicethickness:
+        #print 'slice thickness:',firstdicomfile.slicethickness
+    #if args.smallestimagepixelvalue:
+        #print 'smallest image pixel value:',firstdicomfile.smallestimagepixelvalue
+    #if args.softwareversions:
+        #print 'software versions:',firstdicomfile.softwareversions
+    #if args.spacingbetweenslices:
+        #print 'spacing between slices:',firstdicomfile.spacingbetweenslices
+    #if args.stationname:
+        #print 'station name:',firstdicomfile.stationname
+    #if args.studydate:
+        #print 'study date:',firstdicomfile.studydate
+    #if args.studydescription:
+        #print 'study description:',firstdicomfile.studydescription
+    #if args.studyid:
+        #print 'study id:',firstdicomfile.studyid
+    #if args.studyinstanceuid:
+        #print 'study instance uid:',firstdicomfile.studyinstanceuid
+    #if args.studytime:
+        #print 'study time:',firstdicomfile.studparserytime
+    #if args.transmitcoilname:
+        #print 'transmit coil name:',firstdicomfile.transmitcoilname
+    #if args.variableflipangleflag:
+        #print 'variable flip angle flag:',firstdicomfile.variableflipangleflag
+    #if args.windowcenter:
+        #print 'window center:',firstdicomfile.windowcenter
+    #if args.windowcenterwidthexplanation:
+        #print 'window center width explanation:',firstdicomfile.windowcenterwidthexplanation
 
 
     
 
 
-           #parser.add_argument('-t','--tak',action='store_true',help="Print tak's information")
+           #parser.add_argument('-t','--tak',action='store_true',help="print tak's information")
 
   #  except:
-        #print re.findall('\x08\x00(\d{8})\x10\x00',' '.join(firstDicomFile.MediaStorageSOPClassUID[5])),
-        #print re.findall('\x08\x00(\d{8})\x10\x00',' '.join(firstDicomFile.MediaStorageSOPClassUID[6]))
+        #print re.findall('\x08\x00(\d{8})\x10\x00',' '.join(firstdicomfile.mediastoragesopclassuid[5])),
+        #print re.findall('\x08\x00(\d{8})\x10\x00',' '.join(firstdicomfile.mediastoragesopclassuid[6]))
 
-       # print firstDicomFile
-  #      print 'Data Displayed'
+       # print firstdicomfile
+  #      print 'data displayed'
 
-        #four = re.findall('\x08\x00(\d{8})\x10\x00',firstDicomFile.MediaStorageSOPClassUID[4])
-        #five = re.findall('\x08\x00(\d{8})\x10\x00',firstDicomFile.MediaStorageSOPClassUID[5])
-        #six = re.findall('\x08\x00(\d{8})\x10\x00',firstDicomFile.MediaStorageSOPClassUID[6])
+        #four = re.findall('\x08\x00(\d{8})\x10\x00',firstdicomfile.mediastoragesopclassuid[4])
+        #five = re.findall('\x08\x00(\d{8})\x10\x00',firstdicomfile.mediastoragesopclassuid[5])
+        #six = re.findall('\x08\x00(\d{8})\x10\x00',firstdicomfile.mediastoragesopclassuid[6])
 
         #if four != []:
             #print four
@@ -310,6 +322,7 @@ if __name__=='__main__':
 
     args = parser.parse_args()
     main(args)
+
 
 #    parser.add_argument("-AccessionNumber","--AccessionNumber",action="store_true",help="Get AccessionNumber")
 #    parser.add_argument("-AcquisitionDate","--AcquisitionDate",action="store_true",help="Get AcquisitionDate")
