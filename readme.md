@@ -1,9 +1,11 @@
 #dicomInfo.py
 
+*It returns dicom information*
+
 Dependency : nibabel (http://nipy.org/nibabel/)
 
 
-* Example
+* Example *
 
     dicomInfo.py -h
 
