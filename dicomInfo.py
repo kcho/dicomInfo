@@ -16,7 +16,7 @@ infoList = ['AccessionNumber', 'AcquisitionDate', 'AcquisitionMatrix', 'Acquisit
 
 def getDicomInfo(directory):
     '''
-    Input : directory location
+    Input : dicom directory location
     Output : dicom information
     '''
 
@@ -39,13 +39,13 @@ def getDicomInfo(directory):
             pass
 
 
-
 def getDicomInfo2(dicomFile):
     try:
         firstDicomInfo = dicom.read_file(dicomFile)
     except:
         firstDicomInfo = dicom.read_file(dicomFile,force=True)
     return firstDicomInfo
+
 
 def main(args):
     if args.dicom == None:
@@ -69,7 +69,7 @@ if __name__=='__main__':
                         eg) {codeName}
                         eg) {codeName} -dir /Users/kevin/NOR04_CKI -o PatientID PatientName
 
-                    options: 
+                    Options: 
                     {infoList}
                     '''.format(codeName=os.path.basename(__file__),
                         infoList=', '.join(infoList))))
