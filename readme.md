@@ -10,8 +10,6 @@ Either a target directory or a dicom file location could be given as an input.
 ---
 
 
-** Example **
-
     dicomInfo.py -h
 
     dicomInfo.py -o PatientName EchoTime
