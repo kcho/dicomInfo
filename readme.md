@@ -1,8 +1,13 @@
 #dicomInfo.py
 
-**It returns information in dicom**
+**It prints dicom information**
 
-Dependency : nibabel (http://nipy.org/nibabel/)
+Either a target directory or a dicom file location could be given as an input.
+
+
+*Dependency : nibabel (http://nipy.org/nibabel/)*
+
+---
 
 
 ** Example **
