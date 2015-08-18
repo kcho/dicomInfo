@@ -68,11 +68,18 @@ def getDicomInfo2(dicomFile):
 
 def main(args):
     if args.dicom == None:
-        firstDicomFile = getDicomInfo(args.directory)
+        firstDicomInfo = getDicomInfo(args.directory)
     else:
-        firstDicomFile = getDicomInfo2(args.dicom)
+        firstDicomInfo = getDicomInfo2(args.dicom)
 
-    print firstDicomFile
+    if args.option == None:
+        print firstDicomInfo
+    else:
+        for option in args.option:
+            attribute = getattr(firstDicomInfo, option)
+            if ismethod(attribute):
+                print attribute
+
    
    # if response == 'AccessionNumber':
    #     print firstDicomFile.AccessionNumber
@@ -321,6 +328,7 @@ if __name__=='__main__':
     parser.add_argument("-o","--option",nargs='+',help="Information to print. Choose from the options above")
 
     args = parser.parse_args()
+
     main(args)
 
 
