@@ -12,6 +12,9 @@ optional arguments:
     -dir DIRECTORY, --directory DIRECTORY
                         Data directory location, default = pwd
 
+
+#  Your code sucks
+
     -n, --name            Get patient name
     -i, --id              Get patient ID
     -s, --sex             Get patient sex
